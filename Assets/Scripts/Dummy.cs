@@ -6,6 +6,6 @@ public class Dummy : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        transform.rotation = Quaternion.identity;
+        transform.rotation = Quaternion.LookRotation(-Vector3.forward);
     }
 }
