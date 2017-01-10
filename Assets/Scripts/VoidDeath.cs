@@ -5,10 +5,12 @@ using UnityEngine;
 public class VoidDeath : MonoBehaviour {
 
     private Rigidbody rigbod;
+    private KnockbackModifier knockbackMod;
 
     private void Start()
     {
         rigbod = GetComponent<Rigidbody>();
+        knockbackMod = GetComponent<KnockbackModifier>();
     }
 
 	void FixedUpdate () {
@@ -16,6 +18,7 @@ public class VoidDeath : MonoBehaviour {
         {
             transform.position = new Vector3(0, 5, 0);
             rigbod.velocity = Vector3.zero;
+            knockbackMod.ResetDamage();
         }
 	}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour {
 
-    static float BASE_KNOCKBACK = 0.5f;
+    static float BASE_KNOCKBACK = 0.2f;
 
     private Rigidbody rigbod;
 
@@ -37,9 +37,18 @@ public class Arrow : MonoBehaviour {
     {
         if (!hasAttached)
         {
-            if (other.tag == "Player")
+            Rigidbody otherRigbod = other.GetComponent<Rigidbody>();
+            if (otherRigbod != null)
             {
-                other.GetComponent<Rigidbody>().AddForce(rigbod.velocity * BASE_KNOCKBACK, ForceMode.Impulse);
+                KnockbackModifier otherKnockbackModifier = other.GetComponent<KnockbackModifier>();
+                if (otherKnockbackModifier != null)
+                {
+                    otherRigbod.AddForce(rigbod.velocity * BASE_KNOCKBACK * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
+                    otherKnockbackModifier.TakeDamage();
+                } else
+                {
+                    otherRigbod.AddForce(rigbod.velocity * BASE_KNOCKBACK, ForceMode.Impulse);
+                }
             }
 
             if (other.tag != "Arrow")
