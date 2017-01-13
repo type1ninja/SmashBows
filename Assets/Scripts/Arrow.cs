@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour {
 
-    static float BASE_KNOCKBACK = 0.2f;
+    static float BASE_KNOCKBACK = 10f;
+    static float BASE_DAMAGE = 20f;
 
     private Rigidbody rigbod;
 
     private float currentLifetime = 0;
     private float maxLifetime = 5;
+    private float power = 1f;
 
     private bool hasAttached = false;
 
@@ -33,6 +35,11 @@ public class Arrow : MonoBehaviour {
         }
     }
 
+    public void SetPower(float newPower)
+    {
+        power = newPower;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!hasAttached)
@@ -43,11 +50,11 @@ public class Arrow : MonoBehaviour {
                 KnockbackModifier otherKnockbackModifier = other.GetComponent<KnockbackModifier>();
                 if (otherKnockbackModifier != null)
                 {
-                    otherRigbod.AddForce(rigbod.velocity * BASE_KNOCKBACK * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
-                    otherKnockbackModifier.TakeDamage();
+                    otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
+                    otherKnockbackModifier.TakeDamage(BASE_DAMAGE * power);
                 } else
                 {
-                    otherRigbod.AddForce(rigbod.velocity * BASE_KNOCKBACK, ForceMode.Impulse);
+                    otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power, ForceMode.Impulse);
                 }
             }
 
