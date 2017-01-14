@@ -7,9 +7,10 @@ public class ArrowShooter : MonoBehaviour {
 
     public GameObject ARROW_PREFAB;
     private Slider chargeSlider;
+    private Collider myCol;
 
     //the local offset from the player's head the arrow is spawned at
-    private static Vector3 ARROW_SPAWN_OFFSET = new Vector3(0, 0, 2);
+    private static Vector3 ARROW_SPAWN_OFFSET = new Vector3(0, 0, 0.5f);
     //the default arrow velocity
     private static Vector3 ARROW_SPAWN_VELOCITY_DEFAULT = new Vector3(0, 0, 50);
     //Time in seconds--if you don't charge for this long, your arrow is penalized
@@ -23,6 +24,7 @@ public class ArrowShooter : MonoBehaviour {
     private void Start()
     {
         chargeSlider = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider").GetComponent<Slider>();
+        myCol = transform.parent.GetComponent<Collider>();
     }
     
     private void FixedUpdate()
@@ -44,6 +46,7 @@ public class ArrowShooter : MonoBehaviour {
         if (Input.GetButtonUp("PrimaryFire"))
         {
             GameObject arrow = Instantiate(ARROW_PREFAB, transform.TransformPoint(ARROW_SPAWN_OFFSET), transform.rotation);
+            Physics.IgnoreCollision(myCol, arrow.GetComponent<Collider>());
 
             //If you haven't met the charge threshold
             if (chargeTime < CHARGE_THRESHOLD_MEDIUM)

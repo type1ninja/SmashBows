@@ -40,9 +40,9 @@ public class Arrow : MonoBehaviour {
         power = newPower;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (!hasAttached)
+        if (!hasAttached && other.tag != "Arrow")
         {
             Rigidbody otherRigbod = other.GetComponent<Rigidbody>();
             if (otherRigbod != null)
@@ -50,6 +50,7 @@ public class Arrow : MonoBehaviour {
                 KnockbackModifier otherKnockbackModifier = other.GetComponent<KnockbackModifier>();
                 if (otherKnockbackModifier != null)
                 {
+
                     otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
                     otherKnockbackModifier.TakeDamage(BASE_DAMAGE * power);
                 } else
@@ -58,14 +59,11 @@ public class Arrow : MonoBehaviour {
                 }
             }
 
-            if (other.tag != "Arrow")
-            {
-                rigbod.velocity = Vector3.zero;
-                rigbod.isKinematic = true;
-                transform.SetParent(other.transform);
+            rigbod.velocity = Vector3.zero;
+            rigbod.isKinematic = true;
+            transform.SetParent(other.transform);
 
-                hasAttached = true;
-            }
+            hasAttached = true;
         }
     }
 }

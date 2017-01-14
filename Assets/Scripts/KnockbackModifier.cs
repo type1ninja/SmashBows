@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class KnockbackModifier : MonoBehaviour {
 
     Text healthText;
-
-    static float ARROW_DAMAGE = 10f;
     
     //In hundreds, divide by 100 when we do the actual modifying
     private float modifier = 100f;

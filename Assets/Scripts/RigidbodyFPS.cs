@@ -22,6 +22,7 @@ public class RigidbodyFPS : MonoBehaviour
 
     // Speeds
     public float walkSpeed = 8.0f;
+    public float bowDrawnSpeed = 4.0f;
     public float walkBackwardSpeed = 4.0f;
     public float runSpeed = 14.0f;
     public float runBackwardSpeed = 6.0f;
@@ -131,8 +132,10 @@ public class RigidbodyFPS : MonoBehaviour
     // From the user input calculate using the set up speeds the velocity change
     private Vector3 CalculateVelocityChange(Vector3 inputVector)
     {
-        // Calculate how fast we should be moving
+
         var relativeVelocity = transform.TransformDirection(inputVector);
+        /*
+        // Calculate how fast we should be moving
         if (inputVector.z > 0)
         {
             relativeVelocity.z *= (canRun && Input.GetButton("Sprint")) ? runSpeed : walkSpeed;
@@ -142,6 +145,16 @@ public class RigidbodyFPS : MonoBehaviour
             relativeVelocity.z *= (canRun && Input.GetButton("Sprint")) ? runBackwardSpeed : walkBackwardSpeed;
         }
         relativeVelocity.x *= (canRunSidestep && Input.GetButton("Sprint")) ? runSidestepSpeed : sidestepSpeed;
+        */
+
+        if (Input.GetButton("PrimaryFire")) {
+            relativeVelocity.z *= bowDrawnSpeed;
+            relativeVelocity.x *= bowDrawnSpeed;
+        } else
+        {
+            relativeVelocity.z *= walkSpeed;
+            relativeVelocity.x *= sidestepSpeed;
+        }
 
         // Calcualte the delta velocity
         var currRelativeVelocity = rigbod.velocity - groundVelocity;

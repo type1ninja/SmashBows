@@ -18,7 +18,12 @@ public class VoidDeath : MonoBehaviour {
         {
             transform.position = new Vector3(0, 5, 0);
             rigbod.velocity = Vector3.zero;
-            knockbackMod.ResetDamage();
+            //TODO--temporary if statement so that the crate can be knocked off the cliff and come back
+            //remove this later
+            if (knockbackMod != null)
+            {
+                knockbackMod.ResetDamage();
+            }
         }
 	}
 }
