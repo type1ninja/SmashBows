@@ -40,6 +40,11 @@ public class Arrow : MonoBehaviour {
         power = newPower;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        OnTriggerStay(other);
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (!hasAttached && other.tag != "Arrow")
@@ -50,7 +55,6 @@ public class Arrow : MonoBehaviour {
                 KnockbackModifier otherKnockbackModifier = other.GetComponent<KnockbackModifier>();
                 if (otherKnockbackModifier != null)
                 {
-
                     otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
                     otherKnockbackModifier.TakeDamage(BASE_DAMAGE * power);
                 } else

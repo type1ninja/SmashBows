@@ -6,11 +6,13 @@ public class VoidDeath : MonoBehaviour {
 
     private Rigidbody rigbod;
     private KnockbackModifier knockbackMod;
+    private PlayerColor playerColor;
 
     private void Start()
     {
         rigbod = GetComponent<Rigidbody>();
         knockbackMod = GetComponent<KnockbackModifier>();
+        playerColor = GetComponentInChildren<PlayerColor>();
     }
 
 	void FixedUpdate () {
@@ -23,6 +25,10 @@ public class VoidDeath : MonoBehaviour {
             if (knockbackMod != null)
             {
                 knockbackMod.ResetDamage();
+            }
+            if (playerColor != null)
+            {
+                playerColor.ResetColor();
             }
         }
 	}

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class KnockbackModifier : MonoBehaviour {
 
     Text healthText;
+    private PlayerColor playerColor;
     
     //In hundreds, divide by 100 when we do the actual modifying
     private float modifier = 100f;
@@ -13,6 +14,7 @@ public class KnockbackModifier : MonoBehaviour {
     private void Start()
     {
         healthText = GameObject.Find("HUDCanvas").transform.FindChild("HealthBackground").FindChild("HealthText").GetComponent<Text>();
+        playerColor = GetComponentInChildren<PlayerColor>();
     }
 
     private void Update()
@@ -26,6 +28,7 @@ public class KnockbackModifier : MonoBehaviour {
     public void TakeDamage(float damage)
     {
         modifier += damage;
+        playerColor.TakeColorDamage(modifier);
     }
 
     public void ResetDamage()

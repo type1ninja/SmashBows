@@ -7,6 +7,7 @@ public class ArrowShooter : MonoBehaviour {
 
     public GameObject ARROW_PREFAB;
     private Slider chargeSlider;
+    private Slider chargeSlider2;
     private Collider myCol;
 
     //the local offset from the player's head the arrow is spawned at
@@ -24,11 +25,26 @@ public class ArrowShooter : MonoBehaviour {
     private void Start()
     {
         chargeSlider = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider").GetComponent<Slider>();
+        chargeSlider2 = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider2").GetComponent<Slider>();
         myCol = transform.parent.GetComponent<Collider>();
+    }
+
+    private void Update()
+    {
+        if (chargeTime <= CHARGE_THRESHOLD_MEDIUM / 2)
+        {
+            chargeSlider.value = 0;
+            chargeSlider2.value = 0;
+        } else
+        {
+            chargeSlider.value = charge;
+            chargeSlider2.value = charge;
+        }
     }
     
     private void FixedUpdate()
     {
+        
         if (Input.GetButton("PrimaryFire"))
         {
             chargeTime += Time.fixedDeltaTime;
@@ -38,10 +54,9 @@ public class ArrowShooter : MonoBehaviour {
             //At charge = LCPV, the value is 1
             //At charge = 2 * LCPV, the value is 5/3, or about 1.667
             //At increasingly large charges, the value goes to 3
-            charge = (-chargeTime / (chargeTime - (LOW_CHARGE_POWER_VALUE / 2))) + 3;
+            charge = (-chargeTime / (chargeTime - (CHARGE_THRESHOLD_MEDIUM / 2))) + 3;
             //Update the slider
-            chargeSlider.value = charge;
-        }
+        } 
 
         if (Input.GetButtonUp("PrimaryFire"))
         {
