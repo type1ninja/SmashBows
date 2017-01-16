@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class KnockbackModifier : MonoBehaviour {
+public class KnockbackModifier : NetworkBehaviour {
 
     Text healthText;
     private PlayerColor playerColor;
@@ -19,7 +20,7 @@ public class KnockbackModifier : MonoBehaviour {
 
     private void Update()
     {
-        if (gameObject.tag.Equals("Player"))
+        if (isLocalPlayer)
         {
             healthText.text = modifier.ToString();
         }

@@ -59,7 +59,7 @@ public class RigidbodyFPS : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        
     }
 
     /// <summary>

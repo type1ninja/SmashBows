@@ -16,7 +16,7 @@ public class PlayerColor : MonoBehaviour {
 
     public void TakeColorDamage(float modifier) {
         currentColor.r = Mathf.Clamp(modifier - 100, 0, 255) / 255;
-        currentColor.g = Mathf.Clamp(255 - (currentColor.r * 255), 0, 255) / 255 ;
+        currentColor.g = Mathf.Clamp(255 - (currentColor.r * 255), 0, 255) / 255;
         currentColor.b = 0;
         myRenderer.material.color = currentColor;
     }

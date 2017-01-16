@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Arrow : MonoBehaviour {
+public class Arrow : NetworkBehaviour {
 
     static float BASE_KNOCKBACK = 10f;
     static float BASE_DAMAGE = 20f;
 
     private Rigidbody rigbod;
 
-    private float currentLifetime = 0;
-    private float maxLifetime = 5;
     private float power = 1f;
 
     private bool hasAttached = false;
@@ -26,12 +25,6 @@ public class Arrow : MonoBehaviour {
         {
             //Face in the direction you're moving
             transform.rotation = Quaternion.LookRotation(rigbod.velocity);
-        }
-
-        currentLifetime += Time.fixedDeltaTime;
-        if (currentLifetime >= maxLifetime)
-        {
-            Destroy(gameObject);
         }
     }
 
