@@ -11,9 +11,10 @@ public class ArrowShooter : NetworkBehaviour {
     private Slider chargeSlider2;
     private Collider myCol;
     private Transform head;
+    private Rigidbody rigbod;
 
     //the local offset from the player's head the arrow is spawned at
-    private static Vector3 ARROW_SPAWN_OFFSET = new Vector3(0, 0, 0.5f);
+    private static Vector3 ARROW_SPAWN_OFFSET = new Vector3(0, 0, 2f);
     //the default arrow velocity
     private static Vector3 ARROW_SPAWN_VELOCITY_DEFAULT = new Vector3(0, 0, 25);
     //Time in seconds--if you don't charge for this long, your arrow is penalized
@@ -30,8 +31,9 @@ public class ArrowShooter : NetworkBehaviour {
     {
         chargeSlider = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider").GetComponent<Slider>();
         chargeSlider2 = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider2").GetComponent<Slider>();
-        myCol = transform.GetComponent<Collider>();
+        myCol = GetComponent<Collider>();
         head = transform.Find("PlayerCam");
+        rigbod = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -70,7 +72,7 @@ public class ArrowShooter : NetworkBehaviour {
 
             if (Input.GetButtonUp("PrimaryFire"))
             {
-                CmdShoot(chargeTime, charge);
+                CmdShoot(head.TransformPoint(ARROW_SPAWN_OFFSET), head.rotation, chargeTime, charge);
 
                 chargeTime = 0;
                 charge = 0;
@@ -79,22 +81,26 @@ public class ArrowShooter : NetworkBehaviour {
     }
 
     [Command]
-    public void CmdShoot(float chargeTime, float charge)
+    public void CmdShoot(Vector3 pos, Quaternion rot, float chargeTime, float charge)
     {
-        GameObject arrow = Instantiate(ARROW_PREFAB, head.TransformPoint(ARROW_SPAWN_OFFSET), head.rotation);
+        GameObject arrow = Instantiate(ARROW_PREFAB, pos, rot);
         Physics.IgnoreCollision(myCol, arrow.GetComponent<Collider>());
-
+        
         //If you haven't met the charge threshold
         if (chargeTime < CHARGE_THRESHOLD_MEDIUM)
         {
-            arrow.GetComponent<Rigidbody>().AddRelativeForce(ARROW_SPAWN_VELOCITY_DEFAULT * LOW_CHARGE_POWER_VALUE, ForceMode.VelocityChange);
+            //arrow.GetComponent<Rigidbody>().AddRelativeForce(ARROW_SPAWN_VELOCITY_DEFAULT * LOW_CHARGE_POWER_VALUE, ForceMode.VelocityChange);
+            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * LOW_CHARGE_POWER_VALUE) + rigbod.velocity;
             arrow.GetComponent<Arrow>().SetPower(LOW_CHARGE_POWER_VALUE);
         }
         else //If you HAVE met the charge threshold
         {
-            arrow.GetComponent<Rigidbody>().AddRelativeForce(ARROW_SPAWN_VELOCITY_DEFAULT * charge, ForceMode.VelocityChange);
+            //arrow.GetComponent<Rigidbody>().AddRelativeForce(ARROW_SPAWN_VELOCITY_DEFAULT * charge, ForceMode.VelocityChange);
+            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * charge) + rigbod.velocity;
             arrow.GetComponent<Arrow>().SetPower(charge);
         }
+        //Temp
+        //arrow.GetComponent<Rigidbody>().velocity = arrow.transform.forward * 10 * charge;
 
         NetworkServer.Spawn(arrow);
         Destroy(arrow, ARROW_LIFETIME);
