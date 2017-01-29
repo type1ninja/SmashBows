@@ -9,7 +9,7 @@ public class VoidDeath : NetworkBehaviour {
     private KnockbackModifier knockbackMod;
     private PlayerColor playerColor;
 
-    private static Vector3 RESPAWN_POINT = new Vector3(0, 2, 0);
+    private static Vector3 RESPAWN_POINT = new Vector3(0, 4, 0);
 
     private void Start()
     {
@@ -21,30 +21,25 @@ public class VoidDeath : NetworkBehaviour {
 	void FixedUpdate () {
         if (transform.position.y < -20)
         {
-            //TODO--temporary if statement so that the crate can be knocked off the cliff and come back
-            //remove this later
-            if (knockbackMod != null)
-            {
-                knockbackMod.ResetDamage();
-            }
-            if (playerColor != null)
-            {
-                playerColor.ResetColor();
-            }
-
-            if (isServer) { 
-                RpcRespawn();
-            }
+            Respawn();
         }
 	}
 
-    [ClientRpc]
-    void RpcRespawn()
+    void Respawn()
     {
-        if (isLocalPlayer)
+        transform.position = RESPAWN_POINT;
+        rigbod.velocity = Vector3.zero;
+        
+
+        //TODO--temporary if statement so that the crate can be knocked off the cliff and come back
+        //remove this later
+        if (knockbackMod != null)
         {
-            transform.position = RESPAWN_POINT;
-            rigbod.velocity = Vector3.zero;
+            knockbackMod.ResetDamage();
         }
-    }
+        if (playerColor != null)
+        {
+            playerColor.ResetColor();
+        }
+}
 }
