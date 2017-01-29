@@ -7,6 +7,8 @@ public class Arrow : NetworkBehaviour {
 
     static float BASE_KNOCKBACK = 10f;
     static float BASE_DAMAGE = 20f;
+    //an offset so that players get knocked up off the ground
+    static Vector3 KNOCKBACK_UP_OFFSET = new Vector3(0, .5f, 0);
 
     private Rigidbody rigbod;
 
@@ -48,7 +50,10 @@ public class Arrow : NetworkBehaviour {
                 KnockbackModifier otherKnockbackModifier = other.GetComponent<KnockbackModifier>();
                 if (otherKnockbackModifier != null)
                 {
-                    //otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
+                    if (isServer)
+                    {
+                        otherKnockbackModifier.RpcTakeKnockback((rigbod.velocity.normalized + KNOCKBACK_UP_OFFSET) * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier());
+                    }
                     otherKnockbackModifier.TakeDamage(BASE_DAMAGE * power);
                 } else
                 {
