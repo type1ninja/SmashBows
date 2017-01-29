@@ -48,7 +48,7 @@ public class Arrow : NetworkBehaviour {
                 KnockbackModifier otherKnockbackModifier = other.GetComponent<KnockbackModifier>();
                 if (otherKnockbackModifier != null)
                 {
-                    otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
+                    //otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power * otherKnockbackModifier.GetKnockbackModifier(), ForceMode.Impulse);
                     otherKnockbackModifier.TakeDamage(BASE_DAMAGE * power);
                 } else
                 {

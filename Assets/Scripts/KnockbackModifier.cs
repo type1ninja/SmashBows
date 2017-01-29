@@ -10,6 +10,7 @@ public class KnockbackModifier : NetworkBehaviour {
     private PlayerColor playerColor;
     
     //In hundreds, divide by 100 when we do the actual modifying
+    [SyncVar]
     private float modifier = 100f;
 
     private void Start()
@@ -22,14 +23,17 @@ public class KnockbackModifier : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            healthText.text = modifier.ToString();
+            healthText.text = modifier.ToString("F0");
         }
     }
 
     public void TakeDamage(float damage)
     {
-        modifier += damage;
-        playerColor.TakeColorDamage(modifier);
+        if (isServer)
+        {
+            modifier += damage;
+            playerColor.UpdateColorDamage(modifier);
+        }
     }
 
     public void ResetDamage()
