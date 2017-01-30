@@ -1,21 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class MainMenu : MonoBehaviour {
+public class MainMenu : NetworkBehaviour {
+    
+    //Button groups
     private GameObject joinBtns;
     private GameObject hostBtns;
     private GameObject mainBtns;
 
+    //Join inputs
+    Text joinIPText;
+    Text joinPortText;
+    Text joinPasswordText;
+
+    //Host inputs
+    Text hostPortText;
+    Text hostPasswordText;
+
+    NetworkManager netMan;
+
     private void Start()
     {
+        //Get button groups
         joinBtns = transform.Find("JoinButtons").gameObject;
         hostBtns = transform.Find("HostButtons").gameObject;
         mainBtns = transform.Find("MainButtons").gameObject;
 
+        //Set only main menu button group active
         joinBtns.SetActive(false);
         hostBtns.SetActive(false);
         mainBtns.SetActive(true);
+
+        //Get join inputs
+        joinIPText = transform.Find("JoinButtons").Find("IPField").Find("Text").GetComponent<Text>();
+        joinPortText = transform.Find("JoinButtons").Find("PortField").Find("Text").GetComponent<Text>();
+        joinPasswordText = transform.Find("JoinButtons").Find("PasswordField").Find("Text").GetComponent<Text>();
+
+        //Get host inputs
+        hostPortText = transform.Find("HostButtons").Find("PortField").Find("Text").GetComponent<Text>();
+        hostPasswordText = transform.Find("HostButtons").Find("PasswordField").Find("Text").GetComponent<Text>();
+
+        //Get the network manager
+        netMan = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     }
 
     private void Update()
@@ -53,7 +82,21 @@ public class MainMenu : MonoBehaviour {
         joinBtns.SetActive(false);
         hostBtns.SetActive(false);
     }
-    //End: Menu Navigation
+    //End: Menu Navigation 
+    
+    //Start: Hosting/Joining/Quitting
+    public void HostGame()
+    {
+        netMan.networkPort = int.Parse(hostPortText.text);
+        Network.incomingPassword = hostPasswordText.text;
+
+        netMan.StartHost();
+    }
+
+    public void JoinGame()
+    {
+        Network.Connect(joinIPText.text, int.Parse(joinPortText.text), joinPasswordText.text);
+    }
 
     public void Quit()
     {
