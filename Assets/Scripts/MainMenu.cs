@@ -88,14 +88,16 @@ public class MainMenu : NetworkBehaviour {
     public void HostGame()
     {
         netMan.networkPort = int.Parse(hostPortText.text);
-        Network.incomingPassword = hostPasswordText.text;
 
         netMan.StartHost();
     }
 
     public void JoinGame()
     {
-        Network.Connect(joinIPText.text, int.Parse(joinPortText.text), joinPasswordText.text);
+        netMan.networkAddress = joinIPText.text;
+        netMan.networkPort = int.Parse(joinPortText.text);
+
+        netMan.StartClient();
     }
 
     public void Quit()
