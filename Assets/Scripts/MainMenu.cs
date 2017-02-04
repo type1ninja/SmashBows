@@ -56,6 +56,9 @@ public class MainMenu : NetworkBehaviour {
                 ReturnToMain();
             }
         }
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     //Start: Menu Navigation

@@ -40,23 +40,6 @@ public class ArrowShooter : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            if (chargeTime <= CHARGE_THRESHOLD_MEDIUM / 2)
-            {
-                chargeSlider.value = 0;
-                chargeSlider2.value = 0;
-            }
-            else
-            {
-                chargeSlider.value = charge;
-                chargeSlider2.value = charge;
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (isLocalPlayer)
-        {
             if (Input.GetButton("PrimaryFire"))
             {
                 chargeTime += Time.fixedDeltaTime;
@@ -77,6 +60,17 @@ public class ArrowShooter : NetworkBehaviour {
                 chargeTime = 0;
                 charge = 0;
             }
+        
+            if (chargeTime <= CHARGE_THRESHOLD_MEDIUM / 2)
+            {
+                chargeSlider.value = 0;
+                chargeSlider2.value = 0;
+            }
+            else
+            {
+                chargeSlider.value = charge;
+                chargeSlider2.value = charge;
+            }
         }
     }
 
@@ -90,13 +84,13 @@ public class ArrowShooter : NetworkBehaviour {
         if (chargeTime < CHARGE_THRESHOLD_MEDIUM)
         {
             //arrow.GetComponent<Rigidbody>().AddRelativeForce(ARROW_SPAWN_VELOCITY_DEFAULT * LOW_CHARGE_POWER_VALUE, ForceMode.VelocityChange);
-            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * LOW_CHARGE_POWER_VALUE) + rigbod.velocity;
+            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * LOW_CHARGE_POWER_VALUE);// + rigbod.velocity; //inheritance
             arrow.GetComponent<Arrow>().SetPower(LOW_CHARGE_POWER_VALUE);
         }
         else //If you HAVE met the charge threshold
         {
             //arrow.GetComponent<Rigidbody>().AddRelativeForce(ARROW_SPAWN_VELOCITY_DEFAULT * charge, ForceMode.VelocityChange);
-            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * charge) + rigbod.velocity;
+            arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * charge);// + rigbod.velocity; //inheritance
             arrow.GetComponent<Arrow>().SetPower(charge);
         }
         //Temp

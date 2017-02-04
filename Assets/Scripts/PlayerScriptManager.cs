@@ -20,7 +20,7 @@ public class PlayerScriptManager : NetworkBehaviour {
         rigbodFPS = GetComponentInChildren<RigidbodyFPS>();
         mouseLook = GetComponentInChildren<SimpleSmoothMouseLook>();
         //arrowShoot = GetComponentInChildren<ArrowShooter>();
-        death = GetComponentInChildren<VoidDeath>();
+        //death = GetComponentInChildren<VoidDeath>();
 
         audioListen = GetComponentInChildren<AudioListener>();
         cam = GetComponentInChildren<Camera>();
@@ -30,7 +30,7 @@ public class PlayerScriptManager : NetworkBehaviour {
         rigbodFPS.enabled = true;
         mouseLook.enabled = true;
         //arrowShoot.enabled = true;
-        death.enabled = true;
+        //death.enabled = true;
 
         audioListen.enabled = true;
         cam.enabled = true;

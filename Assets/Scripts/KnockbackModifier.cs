@@ -19,14 +19,8 @@ public class KnockbackModifier : NetworkBehaviour {
         healthText = GameObject.Find("HUDCanvas").transform.FindChild("HealthBackground").FindChild("HealthText").GetComponent<Text>();
         playerColor = GetComponentInChildren<PlayerColor>();
         rigbod = GetComponent<Rigidbody>();
-    }
 
-    private void Update()
-    {
-        if (isLocalPlayer)
-        {
-            healthText.text = modifier.ToString("F0");
-        }
+        healthText.text = modifier.ToString("F0");
     }
 
     public void TakeDamage(float damage)
@@ -51,6 +45,11 @@ public class KnockbackModifier : NetworkBehaviour {
     void OnChangeModifier(float modifier)
     {
         playerColor.UpdateColorDamage(modifier);
+
+        if (isLocalPlayer)
+        {
+            healthText.text = modifier.ToString("F0");
+        }
     }
 
     public float GetKnockbackModifier()
