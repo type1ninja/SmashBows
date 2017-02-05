@@ -8,7 +8,7 @@ public class PlayerScriptManager : NetworkBehaviour {
     private RigidbodyFPS rigbodFPS;
     private SimpleSmoothMouseLook mouseLook;
     //private ArrowShooter arrowShoot;
-    private VoidDeath death;
+    private Death death;
 
     private AudioListener audioListen;
     private Camera cam;

@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class VoidDeath : NetworkBehaviour {
+public class Death : NetworkBehaviour {
 
     private Rigidbody rigbod;
     private KnockbackModifier knockbackMod;
     private PlayerColor playerColor;
 
-    private static Vector3 RESPAWN_POINT = new Vector3(0, 4, 0);
+    private static Vector3[] RESPAWN_POINTS = {
+        new Vector3(17, 4, 17), new Vector3(17, 4, -17),
+        new Vector3(-17, 4, 17), new Vector3(-17, 4, -17)
+    };
 
     private void Start()
     {
@@ -30,7 +33,7 @@ public class VoidDeath : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            transform.position = RESPAWN_POINT;
+            transform.position = RESPAWN_POINTS[Random.Range(0, RESPAWN_POINTS.Length)];
             rigbod.velocity = Vector3.zero;
         }
 
