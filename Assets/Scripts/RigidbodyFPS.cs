@@ -13,6 +13,8 @@ public class RigidbodyFPS : MonoBehaviour
     private CapsuleCollider capsule;
     private Rigidbody rigbod;
 
+    private GameObject pausePanel;
+
     // Inputs Cache
     private bool jumpFlag = false;
 
@@ -52,6 +54,8 @@ public class RigidbodyFPS : MonoBehaviour
         rigbod = GetComponent<Rigidbody>();
         rigbod.freezeRotation = true;
         rigbod.useGravity = true;
+
+        pausePanel = GameObject.Find("PauseCanvas").transform.Find("PausePanel").gameObject;
     }
 
     /// <summary>
@@ -68,7 +72,7 @@ public class RigidbodyFPS : MonoBehaviour
     void Update()
     {
         // Cache the input
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !pausePanel.activeSelf)
             jumpFlag = true;
     }
 
@@ -77,8 +81,12 @@ public class RigidbodyFPS : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        var inputVector = Vector3.zero;
         // Cache de input
-        var inputVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        if (!pausePanel.activeSelf)
+        {
+            inputVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        } 
 
         // On the ground
         if (grounded)

@@ -9,6 +9,7 @@ public class ArrowShooter : NetworkBehaviour {
     public GameObject ARROW_PREFAB;
     private Slider chargeSlider;
     private Slider chargeSlider2;
+    private GameObject pausePanel;
     private Collider myCol;
     private Transform head;
     private Rigidbody rigbod;
@@ -29,8 +30,9 @@ public class ArrowShooter : NetworkBehaviour {
 
     private void Start()
     {
-        chargeSlider = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider").GetComponent<Slider>();
-        chargeSlider2 = GameObject.Find("HUDCanvas").transform.FindChild("ChargeSlider2").GetComponent<Slider>();
+        chargeSlider = GameObject.Find("HUDCanvas").transform.Find("ChargeSlider").GetComponent<Slider>();
+        chargeSlider2 = GameObject.Find("HUDCanvas").transform.Find("ChargeSlider2").GetComponent<Slider>();
+        pausePanel = GameObject.Find("PauseCanvas").transform.Find("PausePanel").gameObject;
         myCol = GetComponent<Collider>();
         head = transform.Find("PlayerCam");
         rigbod = GetComponent<Rigidbody>();
@@ -38,7 +40,7 @@ public class ArrowShooter : NetworkBehaviour {
 
     private void Update()
     {
-        if (isLocalPlayer)
+        if (isLocalPlayer && !pausePanel.activeSelf)
         {
             if (Input.GetButton("PrimaryFire"))
             {

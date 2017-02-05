@@ -20,6 +20,7 @@ public class SimpleSmoothMouseLook : MonoBehaviour
     // Assign this if there's a parent object controlling motion, such as a Character Controller.
     // Yaw rotation will affect this object instead of the camera if set. 
     public GameObject characterBody;
+    private GameObject pausePanel;
 
     void Start()
     {
@@ -28,13 +29,16 @@ public class SimpleSmoothMouseLook : MonoBehaviour
 
         // Set target direction for the character body to its inital state.
         if (characterBody) targetCharacterDirection = characterBody.transform.localRotation.eulerAngles;
+
+        pausePanel = GameObject.Find("PauseCanvas").transform.Find("PausePanel").gameObject;
     }
 
     void Update()
     {
-        // Ensure the cursor is always locked when set
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (pausePanel.activeSelf)
+        {
+            return;
+        }
 
         // Allow the script to clamp based on a desired target value.
         var targetOrientation = Quaternion.Euler(targetDirection);
