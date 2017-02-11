@@ -11,6 +11,7 @@ public class Arrow : NetworkBehaviour {
     static Vector3 KNOCKBACK_UP_OFFSET = new Vector3(0, .5f, 0);
 
     private Rigidbody rigbod;
+    //private KillCount myKillCount;
 
     private float power = 1f;
 
@@ -18,7 +19,7 @@ public class Arrow : NetworkBehaviour {
 
     private void Start()
     {
-        rigbod = GetComponent<Rigidbody>();  
+        rigbod = GetComponent<Rigidbody>();
     } 
 
     private void FixedUpdate()
@@ -33,6 +34,11 @@ public class Arrow : NetworkBehaviour {
     public void SetPower(float newPower)
     {
         power = newPower;
+    }
+
+    public void SetKCount(KillCount newKillCount)
+    {
+        //myKillCount = newKillCount;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,6 +64,12 @@ public class Arrow : NetworkBehaviour {
                 } else
                 {
                     otherRigbod.AddForce(rigbod.velocity.normalized * BASE_KNOCKBACK * power, ForceMode.Impulse);
+                }
+
+                Death otherDeath = other.GetComponent<Death>();
+                if (otherDeath != null)
+                {
+                    //otherDeath.SetLastPlayerHit(myKillCount);
                 }
             }
 

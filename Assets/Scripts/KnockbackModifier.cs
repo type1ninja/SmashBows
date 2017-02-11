@@ -20,7 +20,7 @@ public class KnockbackModifier : NetworkBehaviour {
         playerColor = GetComponentInChildren<PlayerColor>();
         rigbod = GetComponent<Rigidbody>();
 
-        healthText.text = modifier.ToString("F0");
+        healthText.text = modifier.ToString("F0") + "%";
     }
 
     public void TakeDamage(float damage)
@@ -48,7 +48,7 @@ public class KnockbackModifier : NetworkBehaviour {
 
         if (isLocalPlayer)
         {
-            healthText.text = modifier.ToString("F0");
+            healthText.text = modifier.ToString("F0") + "%";
         }
     }
 

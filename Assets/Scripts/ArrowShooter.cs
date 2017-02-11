@@ -12,7 +12,7 @@ public class ArrowShooter : NetworkBehaviour {
     private GameObject pausePanel;
     private Collider myCol;
     private Transform head;
-    private Rigidbody rigbod;
+    ///private KillCount myKillCount;
 
     //the local offset from the player's head the arrow is spawned at
     private static Vector3 ARROW_SPAWN_OFFSET = new Vector3(0, 0, 2f);
@@ -35,7 +35,7 @@ public class ArrowShooter : NetworkBehaviour {
         pausePanel = GameObject.Find("PauseCanvas").transform.Find("PausePanel").gameObject;
         myCol = GetComponent<Collider>();
         head = transform.Find("PlayerCam");
-        rigbod = GetComponent<Rigidbody>();
+        //myKillCount = GetComponent<KillCount>();
     }
 
     private void Update()
@@ -95,8 +95,7 @@ public class ArrowShooter : NetworkBehaviour {
             arrow.GetComponent<Rigidbody>().velocity = arrow.transform.TransformDirection(ARROW_SPAWN_VELOCITY_DEFAULT * charge);// + rigbod.velocity; //inheritance
             arrow.GetComponent<Arrow>().SetPower(charge);
         }
-        //Temp
-        //arrow.GetComponent<Rigidbody>().velocity = arrow.transform.forward * 10 * charge;
+        //arrow.GetComponent<Arrow>().SetKCount(myKillCount);
 
         NetworkServer.Spawn(arrow);
         Destroy(arrow, ARROW_LIFETIME);
