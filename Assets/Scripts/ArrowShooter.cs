@@ -80,7 +80,7 @@ public class ArrowShooter : NetworkBehaviour {
     public void CmdShoot(Vector3 pos, Quaternion rot, float chargeTime, float charge)
     {
         GameObject arrow = Instantiate(ARROW_PREFAB, pos, rot);
-        Physics.IgnoreCollision(myCol, arrow.GetComponent<Collider>());
+        arrow.GetComponent<Arrow>().SetSpawnedBy(netId);
         
         //If you haven't met the charge threshold
         if (chargeTime < CHARGE_THRESHOLD_MEDIUM)

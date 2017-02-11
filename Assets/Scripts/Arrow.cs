@@ -11,6 +11,8 @@ public class Arrow : NetworkBehaviour {
     static Vector3 KNOCKBACK_UP_OFFSET = new Vector3(0, .5f, 0);
 
     private Rigidbody rigbod;
+    [SyncVar]
+    private NetworkInstanceId spawnedBy;
     //private KillCount myKillCount;
 
     private float power = 1f;
@@ -20,7 +22,13 @@ public class Arrow : NetworkBehaviour {
     private void Start()
     {
         rigbod = GetComponent<Rigidbody>();
-    } 
+    }
+
+    public override void OnStartClient()
+    {
+        GameObject obj = ClientScene.FindLocalObject(spawnedBy);
+        Physics.IgnoreCollision(GetComponent<Collider>(), obj.GetComponent<Collider>());
+    }
 
     private void FixedUpdate()
     {
@@ -39,6 +47,11 @@ public class Arrow : NetworkBehaviour {
     public void SetKCount(KillCount newKillCount)
     {
         //myKillCount = newKillCount;
+    }
+
+    public void SetSpawnedBy(NetworkInstanceId newSpawnerId)
+    {
+        spawnedBy = newSpawnerId;
     }
 
     private void OnTriggerEnter(Collider other)
